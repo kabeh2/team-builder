@@ -29,9 +29,9 @@ function App() {
         elementType: "select",
         elementConfig: {
           options: [
-            { value: "backendEngineer", displayValue: "Backend Engineer" },
-            { value: "frontendEngineer", displayValue: "Front End Engineer" },
-            { value: "designer", displayValue: "Designer" }
+            { value: "Backend Engineer", displayValue: "Backend Engineer" },
+            { value: "Front End Engineer", displayValue: "Front End Engineer" },
+            { value: "Designer", displayValue: "Designer" }
           ]
         },
         value: "Backend Engineer"
@@ -78,34 +78,7 @@ function App() {
     console.log(newMember);
     addNewPerson(newMember);
     setState({
-      orderForm: {
-        name: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "Your Name"
-          },
-          value: ""
-        },
-        email: {
-          elementType: "input",
-          elementConfig: {
-            type: "email",
-            placeholder: "Your Email"
-          },
-          value: ""
-        },
-        role: {
-          elementType: "select",
-          elementConfig: {
-            options: [
-              { value: "fastest", displayValue: "Fastest" },
-              { value: "cheapest", displayValue: "Cheapest" }
-            ]
-          },
-          value: "fastest"
-        }
-      }
+      ...initialState
     });
   };
 
