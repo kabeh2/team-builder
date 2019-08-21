@@ -1,0 +1,15 @@
+.edit_btn {
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid #000;
+  color: #000;
+  padding: 8px 16px;
+  /* margin-bottom: 8px; */
+
+  transition: all 0.2s ease-in-out;
+}
+
+.edit_btn:hover {
+  background-color: #000;
+  color: #fff;
+}
