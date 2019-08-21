@@ -40,9 +40,17 @@ function App() {
   };
   const [state, setState] = useState(initialState);
   const [members, setMembers] = useState(data);
+  // const [memberToEdit, setMemberToEdit] = useState("");
 
   const addNewPerson = person => {
     setMembers([...members, person]);
+  };
+
+  const deletePersonHandler = personIndex => {
+    const person = [...members];
+    person.splice(personIndex, 1);
+    setMembers([...person]);
+    console.log(person);
   };
 
   const inputChangedHandler = (event, inputIdentifier) => {
@@ -100,7 +108,16 @@ function App() {
   return (
     <div className="App">
       {form}
-      <TeamList teamList={members} />
+      {members.map((member, index) => (
+        <TeamList
+          teamList={members}
+          // edit={memberToEdit}
+          member={member}
+          index={index}
+          key={index}
+          onClick={() => deletePersonHandler(index)}
+        />
+      ))}
     </div>
   );
 }
