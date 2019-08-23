@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, {
+  useState
+  // useEffect
+} from "react";
 import Input from "./component/input";
 import Button from "./component/button";
 import data from "./data";
@@ -15,7 +18,8 @@ function App() {
           type: "text",
           placeholder: "Your Name"
         },
-        value: ""
+        value: "",
+        memberToEdit: false
       },
       email: {
         elementType: "input",
@@ -23,7 +27,8 @@ function App() {
           type: "email",
           placeholder: "Your Email"
         },
-        value: ""
+        value: "",
+        memberToEdit: false
       },
       role: {
         elementType: "select",
@@ -34,17 +39,86 @@ function App() {
             { value: "Designer", displayValue: "Designer" }
           ]
         },
-        value: "Backend Engineer"
+        value: "Backend Engineer",
+        memberToEdit: false
       }
     }
   };
   const [state, setState] = useState(initialState);
   const [members, setMembers] = useState(data);
-  // const [memberToEdit, setMemberToEdit] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [memberIndex, setMemberIndex] = useState(null);
+
+  const editPerson = personIndex => {
+    let person = [...members];
+    person = person[personIndex];
+
+    setEditing(true);
+    console.log(editing);
+
+    //
+
+    setMemberIndex(personIndex);
+    console.log(memberIndex);
+
+    setState({
+      orderForm: {
+        name: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Your Name"
+          },
+          value: person.name
+        },
+        email: {
+          elementType: "input",
+          elementConfig: {
+            type: "email",
+            placeholder: "Your Email"
+          },
+          value: person.email
+        },
+        role: {
+          elementType: "select",
+          elementConfig: {
+            options: [
+              { value: "Backend Engineer", displayValue: "Backend Engineer" },
+              {
+                value: "Front End Engineer",
+                displayValue: "Front End Engineer"
+              },
+              { value: "Designer", displayValue: "Designer" }
+            ]
+          },
+          value: person.role
+        }
+      }
+    });
+  };
+
+  const clearInput = () => {
+    setState({ ...initialState });
+    setEditing(false);
+  };
 
   const addNewPerson = person => {
     setMembers([...members, person]);
   };
+  const editSubmit = person => {
+    let editedMember = [...members];
+    editedMember[memberIndex] = person;
+    console.log("editPerson: " + JSON.stringify(editedMember));
+
+    setMembers([...editedMember]);
+  };
+
+  // useEffect(() => {
+  //   editSubmit();
+  //   // return () => {
+  //   //   cleanup
+  //   // };
+  // }, []);
 
   const deletePersonHandler = personIndex => {
     const person = [...members];
@@ -84,10 +158,17 @@ function App() {
       id: Date.now()
     };
     console.log(newMember);
-    addNewPerson(newMember);
+
+    // if editing editPerson else addNewPerson
+    if (editing) {
+      editSubmit(newMember);
+    } else {
+      addNewPerson(newMember);
+    }
     setState({
       ...initialState
     });
+    setEditing(false);
   };
 
   let form = (
@@ -98,10 +179,18 @@ function App() {
           elementType={formElement.config.elementType}
           elementConfig={formElement.config.elementConfig}
           value={formElement.config.value}
+          editing={editing}
           changed={event => inputChangedHandler(event, formElement.id)}
         />
       ))}
-      <Button btnType="Success">ADD</Button>
+      <Button type="reset" value="Reset" clear={clearInput}>
+        {editing ? "CANCEL" : "CLEAR"}
+      </Button>
+      {editing ? (
+        <Button onClick={editSubmit}>EDIT</Button>
+      ) : (
+        <Button>ADD</Button>
+      )}
     </form>
   );
 
@@ -111,7 +200,7 @@ function App() {
       {members.map((member, index) => (
         <TeamList
           teamList={members}
-          // edit={memberToEdit}
+          edit={() => editPerson(index)}
           member={member}
           index={index}
           key={index}

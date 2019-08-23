@@ -10,7 +10,9 @@ const TeamList = props => {
         <h2>{props.member.name}</h2>
         <h3>{props.member.role}</h3>
         <p>{props.member.email}</p>
-        <button className="edit_btn">Edit</button>
+        <button className="edit_btn" onClick={props.edit}>
+          Edit
+        </button>
         <button className="edit_btn" onClick={props.onClick}>
           Delete
         </button>
