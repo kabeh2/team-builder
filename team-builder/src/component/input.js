@@ -5,6 +5,12 @@ const Input = props => {
   let inputElement = null;
   const inputClasses = [classes.InputElement];
 
+  // EXAMPLE OF HOW useEffect() couldve been used
+  // sync with memberToEdit
+  //   useEffect(()=>{
+  //     return setMember(props.memberToEdit);
+  //  }, [props.memberToEdit])
+
   switch (props.elementType) {
     case "input":
       inputElement = (
