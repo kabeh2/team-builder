@@ -56,8 +56,8 @@ function App() {
     setEditing(true);
     console.log(editing);
 
-    //
-
+    // Get Index to use in Submit Edit since we can't
+    // get the index of the mapped item. Btn falls outside map
     setMemberIndex(personIndex);
     console.log(memberIndex);
 
@@ -127,6 +127,7 @@ function App() {
     console.log(person);
   };
 
+  // Change Handler for all dynamic inputs
   const inputChangedHandler = (event, inputIdentifier) => {
     const updatedOrderForm = {
       ...state.orderForm
@@ -137,6 +138,7 @@ function App() {
     setState({ orderForm: updatedOrderForm });
   };
 
+  // create an array out of state to map the form from
   const formElementsArray = [];
   for (let key in state.orderForm) {
     formElementsArray.push({
@@ -147,12 +149,16 @@ function App() {
 
   const submitForm = event => {
     event.preventDefault();
+
+    // create object of elements in state set value for each
+    // element in state
     let formData = {};
     for (let formElementIdentifier in state.orderForm) {
       formData[formElementIdentifier] =
         state.orderForm[formElementIdentifier].value;
     }
 
+    // set new member data in object
     const newMember = {
       ...formData,
       id: Date.now()
@@ -165,9 +171,13 @@ function App() {
     } else {
       addNewPerson(newMember);
     }
+
+    // reset state of fields
     setState({
       ...initialState
     });
+
+    // reset editing to false so buttons can revert from edit labels
     setEditing(false);
   };
 
